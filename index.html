@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tỏ Tình</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f8f0fb; /* Màu hồng nhạt */
+            overflow: hidden; /* Ngăn thanh cuộn */
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.8); /* Màu trắng trong suốt */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Bóng đổ nhẹ */
+            z-index: 10; /* Đảm bảo container ở trên các trái tim */
+        }
+
+        h1 {
+            font-size: 3em; /* Kích thước chữ lớn */
+            color: #e53e3e; /* Màu đỏ đậm */
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.5em; /* Kích thước chữ vừa */
+            color: #7d3c98; /* Màu tím */
+            margin-bottom: 30px;
+        }
+
+        #yes-btn, #no-btn {
+            padding: 12px 24px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s ease, font-size 0.2s ease; /* Hiệu ứng chuyển động */
+            font-family: 'Dancing Script', cursive;
+        }
+
+        #yes-btn {
+            background-color: #f472b6; /* Màu hồng đậm hơn */
+            color: white;
+            margin-right: 20px;
+        }
+
+        #yes-btn:hover {
+            background-color: #ec4899; /* Màu hồng đậm hơn nữa khi hover */
+            transform: scale(1.1); /* Phóng to một chút */
+            font-size: 1.3em;  /* Tăng kích thước chữ khi hover */
+        }
+
+        #no-btn {
+            background-color: #a7f3d0; /* Màu xanh nhạt */
+            color: #134e4a;
+        }
+
+        #no-btn:hover {
+            background-color: #34d399; /* Màu xanh đậm hơn khi hover */
+            transform: scale(1.1);
+            font-size: 1.3em;
+        }
+
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #f87171; /* Màu đỏ tươi */
+            border-radius: 50%;
+            transform: rotate(45deg);
+            pointer-events: none; /* Cho phép click xuyên qua trái tim */
+        }
+        .heart::before,
+        .heart::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #f87171;
+            border-radius: 50%;
+        }
+        .heart::before {
+            top: -10px;
+            left: 0;
+        }
+        .heart::after {
+            top: 0;
+            left: 10px;
+        }
+
+        @keyframes heartAnimation {
+            0% {
+                transform: rotate(45deg) scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: rotate(45deg) scale(1.3);
+                opacity: 1;
+            }
+            100% {
+                transform: rotate(45deg) scale(1);
+                opacity: 0;
+            }
+        }
+        #final-message {
+            font-size: 2em;
+            color: #e67e22;  /* Màu cam */
+            display: none;
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Em ơi, làm người yêu anh nhé?</h1>
+        <p>Anh có điều này muốn hỏi em...</p>
+        <button id="yes-btn">Có</button>
+        <button id="no-btn">Không</button>
+        <p id="final-message"></p>
+    </div>
+
+    <script>
+        const yesBtn = document.getElementById('yes-btn');
+        const noBtn = document.getElementById('no-btn');
+        const container = document.querySelector('.container');
+        const body = document.querySelector('body');
+        const finalMessage = document.getElementById('final-message');
+
+        let noCount = 0;
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight;
+            heart.style.left = `${x}px`;
+            heart.style.top = `${y}px`;
+            heart.style.animationDuration = `${Math.random() * 2 + 1}s`; // Tốc độ rơi ngẫu nhiên
+            body.appendChild(heart);
+
+            heart.addEventListener('animationend', () => {
+                heart.remove();
+            });
+        }
+
+        yesBtn.addEventListener('click', () => {
+            // Hiển thị message
+            finalMessage.textContent = "Tuyệt vời! Anh yêu em!";
+            finalMessage.style.display = "block";
+            // Ẩn nút yes và no
+            yesBtn.style.display = "none";
+            noBtn.style.display = "none";
+            // Tạo mưa tim
+            setInterval(createHeart, 100); // Tạo tim mỗi 0.1 giây
+             // Phát nhạc
+            const audio = new Audio('https://www.dropbox.com/s/fbuy8n4b9v77994/sugar.mp3?dl=1');
+            audio.play();
+
+        });
+
+        noBtn.addEventListener('click', () => {
+            noCount++;
+            if (noCount < 5) {
+                alert('Em chắc chứ? Nghĩ lại đi mà!');
+            } else if (noCount < 10) {
+                alert('Anh buồn đó nha :( Cho anh cơ hội đi!');
+            } else {
+                alert('Thôi anh chịu thua. Nhưng anh vẫn yêu em!');
+            }
+
+            // Thay đổi vị trí nút "Không"
+            const maxX = window.innerWidth - noBtn.offsetWidth;
+            const maxY = window.innerHeight - noBtn.offsetHeight;
+            const newX = Math.random() * maxX;
+            const newY = Math.random() * maxY;
+            noBtn.style.left = `${newX}px`;
+            noBtn.style.top = `${newY}px`;
+            noBtn.style.position = 'absolute';
+        });
+
+        setInterval(createHeart, 500); // Tạo tim rơi nhẹ nhàng
+    </script>
+</body>
+</html>
